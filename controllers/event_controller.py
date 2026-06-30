@@ -1,21 +1,39 @@
 from fastapi import APIRouter, HTTPException
 from services.event_service import EventService
+from services.face_selected import FaceSelectedService
+
 from dto.EventDTO import EventDTO
 from dto.buildRequestDTO import BuildRequest
+from dto.face_selectedDTO import face_selectedDTO
 from fastapi.responses import JSONResponse
 import tkinter as tk
 from tkinter import filedialog
+service=FaceSelectedService()
 router = APIRouter(prefix="/event", tags=["Events"])
 # from services.build import Build
 
 event_service = EventService()
-# buildService = Build()
+#buildService = Build()
 @router.post("/get_faces")
 async def get_faces(event_data: EventDTO):
     return await event_service.get_faces(event_data)
 @router.post("/")
 async def create_event(event_data: EventDTO):
     return await event_service.create_event(event_data)
+
+@router.post("/process-selection")
+async def process_faces(data:face_selectedDTO):
+    try:
+        result =service.process_selected_faces(
+            data.bride_image,
+            data.groom_image,
+            data.selected_faces
+        )
+        return result
+
+    except Exception as e:
+            return {"error": str(e)}
+
 
 selected_folder = None
 @router.post("/select-folder")
@@ -62,21 +80,21 @@ async def delete_event(event_id: int):
     return {"message": "Event deleted"}
 
 
-@router.post("/build/images")
-async def build_images(request: BuildRequest):
-    """
-    בנה דמויות לאירוע עם path, cust_id, event_id
-    
-    :param request: BuildRequest עם path, cust_id, event_id
-    :return: תוצאות העיבוד
-    """
-    result = buildService.build_event_images(
-        path=request.path,
-        cust_id=request.cust_id,
-        event_id=request.event_id
-    )
-    
-    # if result.get("status") == "error":
-    #     raise HTTPException(status_code=400, detail=result.get("message"))
-    
-    return result
+# @router.post("/build/images")
+# async def build_images(request: BuildRequest):
+#     """
+#     בנה דמויות לאירוע עם path, cust_id, event_id
+#
+#     :param request: BuildRequest עם path, cust_id, event_id
+#     :return: תוצאות העיבוד
+#     """
+#     result = buildService.build_event_images(
+#         path=request.path,
+#         cust_id=request.cust_id,
+#         event_id=request.event_id
+#     )
+#
+#     # if result.get("status") == "error":
+#     #     raise HTTPException(status_code=400, detail=result.get("message"))
+#
+#     return result
