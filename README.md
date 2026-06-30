@@ -3,6 +3,17 @@
 ## 📋 Project Overview
 
 **PicUp** is an intelligent photo management system designed to automatically filter, categorize, and select high-quality photos from large event photo repositories. The system helps photographers reduce manual selection time by up to 70% while improving accuracy and maintaining consistent quality.
+## My Contributions
+
+## I was responsible for:
+
+- Designing the backend architecture
+- Creating MongoDB schemas
+- Implementing REST APIs
+- Developing image filtering algorithms
+- Building React components
+- Integrating backend and frontend
+
 
 ### Problem Statement
 During large-scale photography events, photographers accumulate thousands of images that require manual sorting and selection. This manual process is:
@@ -18,7 +29,23 @@ PicUp automates this workflow through intelligent algorithms that:
 - Allow precise selection of desired photo quantities
 - Organize results for easy review and export
 
----
+
+## Data Flow
+User Uploads Photos
+        ↓
+React Frontend
+        ↓
+FastAPI Backend
+        ↓
+Image Processing Service
+        ↓
+OpenCV + PyTorch
+        ↓
+MongoDB Atlas
+        ↓
+Processed Results
+        ↓
+Frontend Display
 
 ## 🎯 Key Features
 
@@ -29,7 +56,7 @@ PicUp automates this workflow through intelligent algorithms that:
 - ✅ **Flexible Selection** - Users define exact quantity of photos needed
 - ✅ **User-Friendly Interface** - Intuitive React-based GUI for non-technical users
 - ✅ **High Scalability** - Process hundreds to thousands of photos simultaneously
-- ✅ **Security Features** - SSL/TLS encryption, 2FA authentication, DRM protection
+- ✅ **Security Features** - JWT authentication, Password hashing, HTTPS/TLS support, File type validation, Input validation
 
 ---
 
@@ -37,20 +64,21 @@ PicUp automates this workflow through intelligent algorithms that:
 
 ### Backend
 - **Language:** Python 3.x
-- **Framework:** Flask/FastAPI (for REST API)
+- **Framework:** FastAPI (for REST API)
 - **Image Processing:** OpenCV
 - **Machine Learning:** PyTorch
 - **Database:** MongoDB with Mongoose ODM
 
 ### Frontend
-- **Framework:** React.js
-- **UI Library:** React component-based architecture
-- **HTTP Client:** Axios
-- **Styling:** CSS/responsive design
+
+- Framework: React.js
+- HTTP Client: Axios
+- Styling: CSS (Flexbox, Grid, Media Queries)
+- Responsive Design: Mobile and desktop support
 
 ### Infrastructure & DevOps
 - **Cloud Platform:** AWS (with GPU support for image processing)
-- **Database Hosting:** MongoDB Atlas/Cloud
+- **Database Hosting:** MongoDB Atlas
 - **Version Control:** Git & GitHub
 - **Deployment:** Docker (containerized)
 
@@ -195,14 +223,14 @@ Frontend runs on: `http://localhost:3000`
 
 ### Core Components
 
-| Component | Purpose | Technologies |
-|-----------|---------|---------------|
-| **Photo Upload Module** | Receive & store images | Flask, MongoDB |
-| **Filtering Engine** | Quality & content analysis | OpenCV, PyTorch |
-| **Face Detection** | Identify key people | PyTorch, TensorFlow |
+| Component | Purpose | Technologies        |
+|-----------|---------|---------------------|
+| **Photo Upload Module** | Receive & store images | FastAPI, MongoDB    |
+| **Filtering Engine** | Quality & content analysis | OpenCV, PyTorch     |
+| **Face Detection** | Identify key people | PyTorch|
 | **Duplicate Detector** | Find similar images | Vector matching, ML |
-| **Categorization Engine** | Auto-classify photos | AI/ML models |
-| **User Interface** | Display & manage results | React.js |
+| **Categorization Engine** | Auto-classify photos | AI+ML models        |
+| **User Interface** | Display & manage results | React.js            |
 
 ---
 
@@ -245,26 +273,20 @@ Segments photos into:
 4. **User Satisfaction** - Intuitive interface requiring no technical knowledge
 
 ### Performance Targets
-- Process 100-1000 photos in <2 minutes
-- Support concurrent user sessions
-- 99.9% system uptime
-- Sub-second API response times
-
+Target goals:
+- Reduce manual selection time
+- Improve duplicate detection accuracy
+- Accelerate photo delivery workflow
 ---
 
 ## 🔒 Security Features
 
-| Security Layer | Implementation |
-|----------------|-----------------|
-| **Data Encryption** | HTTPS/TLS, AES-256 at rest |
-| **Authentication** | JWT tokens + 2FA (email/SMS) |
-| **Authorization** | Role-Based Access Control (RBAC) |
-| **File Upload** | Virus scanning, format validation |
-| **Database** | MongoDB replica sets, encrypted backups |
-| **API Security** | OAuth 2.0, rate limiting, API keys |
-| **Input Validation** | SQL injection prevention, prepared statements |
-| **Password Security** | bcrypt/Argon2 hashing |
-
+Security:
+- JWT authentication
+- Password hashing
+- HTTPS support
+- File type validation
+- Input validation
 ---
 
 ## 🧪 Testing Strategy
@@ -293,17 +315,12 @@ Segments photos into:
 - Access control validation
 - Data encryption verification
 
----
+## Technical Challenges
 
-## 📅 Development Timeline
-
-| Phase | Duration | Deliverables |
-|-------|----------|--------------|
-| **Planning & Requirements** | Apr 13-26, 2026 | Requirements doc, Architecture design |
-| **Core Development** | Apr 27 - Jun 11, 2026 | Photo upload, filters, ML models |
-| **Testing** | Jun 12 - Jul 1, 2026 | Unit, integration, load, security tests |
-| **Documentation** | Jul 2-12, 2026 | User manual, technical docs |
-
+- Handling large photo repositories efficiently
+- Reducing duplicate detection false positives
+- Optimizing image processing performance
+- Managing asynchronous processing workflows
 ---
 
 ## 📚 Dependencies
@@ -350,7 +367,7 @@ See `requirements.txt` for complete Python dependencies list.
 
 ## 📝 Current Status
 
-**Status:** 🚧 **IN DEVELOPMENT**
+**Status:** Active Development (MVP Phase)
 
 ### Completed
 - [x] Project planning & requirements analysis
@@ -372,13 +389,6 @@ See `requirements.txt` for complete Python dependencies list.
 - [ ] Security hardening
 - [ ] Deployment & documentation
 
----
-
-## 📧 Contact & Support
-
-**Project Developers:**
-- Bracha Hasid (ID: 328196282)
-- Miriam Fisher (ID: 215427238)
 ---
 
 ## 📄 License
