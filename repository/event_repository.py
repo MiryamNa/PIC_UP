@@ -1,4 +1,5 @@
 from models.event import Event
+from dto.EventDTO import EventDTO
 
 class EventRepository:
 

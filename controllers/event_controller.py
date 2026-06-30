@@ -1,17 +1,41 @@
 from fastapi import APIRouter, HTTPException
 from services.event_service import EventService
 from dto.EventDTO import EventDTO
-router = APIRouter(prefix="/event", tags=["Events"])
-from services.build import Build
 from dto.buildRequestDTO import BuildRequest
-router = APIRouter(prefix="/events", tags=["Events"])
-event_service = EventService()
-buildService = Build()
+from fastapi.responses import JSONResponse
+import tkinter as tk
+from tkinter import filedialog
+router = APIRouter(prefix="/event", tags=["Events"])
+# from services.build import Build
 
+event_service = EventService()
+# buildService = Build()
+@router.post("/get_faces")
+async def get_faces(event_data: EventDTO):
+    return await event_service.get_faces(event_data)
 @router.post("/")
 async def create_event(event_data: EventDTO):
     return await event_service.create_event(event_data)
 
+selected_folder = None
+@router.post("/select-folder")
+def select_folder():
+    global selected_folder
+
+    root = tk.Tk()
+    root.withdraw()
+    root.wm_attributes('-topmost', True)
+
+    folder = filedialog.askdirectory(title="בחר תיקייה עם תמונות")
+    root.destroy()
+
+    print(folder)
+
+    if not folder:
+        return JSONResponse(content={"success": False})
+
+    selected_folder = folder
+    return JSONResponse(content={"success": True, "path": folder})
 @router.get("/")
 async def get_events():
     return await event_service.list_events()

@@ -11,17 +11,13 @@ from services.config import MONGO_URI, DB_NAME
 # ייבוא כל המודלים
 from models.event import Event
 from models.customer import Customer
-from models.photografer import Photografer
 from models.Category import Category
-from models.customer_of_photografer import CustomerOfPhotografer
 from models.categories_of_event import CategoryOfEvent
 
 # ייבוא כל ה-routers
 from controllers.event_controller import router as event_router
 from controllers.customer_controller import router as customer_router
-from controllers.photografer_controller import router as photografer_router
 from controllers.category_controller import router as category_router
-from controllers.customer_of_photografer_controller import router as customer_of_photografer_router
 from controllers.category_of_event_controller import router as category_of_event_router
 
 app = FastAPI(title="PicUp API")
@@ -36,9 +32,7 @@ app.add_middleware(
 # הוספת כל ה-routers
 app.include_router(event_router)
 app.include_router(customer_router)
-app.include_router(photografer_router)
 app.include_router(category_router)
-app.include_router(customer_of_photografer_router)
 app.include_router(category_of_event_router)
 
 # אתחול MongoDB + Beanie
@@ -48,11 +42,10 @@ async def init_db():
     await init_beanie(database=db, document_models=[
         Event,
         Customer,
-        Photografer,
         Category,
-        CustomerOfPhotografer,
         CategoryOfEvent
     ])
 
-import asyncio
-asyncio.run(init_db())
+@app.on_event("startup")
+async def startup():
+    await init_db()

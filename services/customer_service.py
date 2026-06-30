@@ -23,7 +23,6 @@ class CustomerService:
         customer = await Customer.find_one(
             {
                 "firstName": payload.firstName,
-                "lastName": payload.lastName,
                 "password": payload.password
             }
         )

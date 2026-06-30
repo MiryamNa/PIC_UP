@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
-from dto.customerDTO import CustomerDTO
+from dto.CustomerDTO import CustomerDTO
 from services.customer_service import CustomerService
-
-router = APIRouter(prefix="/customers", tags=["Customers"])
+from dto.CustomerLoginRequest import CustomerLoginRequest
+router = APIRouter(prefix="/customer", tags=["Customers"])
 service = CustomerService()
 
 @router.post("/")
@@ -23,7 +23,7 @@ async def get_customer(customer_id: str):
     return customer
 
 @router.put("/{customer_id}")
-async def update_customer(customer_id: str, data:Customer):
+async def update_customer(customer_id: str, data:CustomerDTO):
     customer = await service.update(customer_id, data)
     if not customer:
         raise HTTPException(status_code=404, detail="Customer not found")
