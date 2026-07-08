@@ -28,5 +28,5 @@ class EventService:
     async def update_event(self, event_id: int, update_data: dict):
         return await self.repo.update_event(event_id, update_data)
 
-    async def remove_event(self, event_id: int):
+    async def remove_event(self, event_id: str):
         return await self.repo.delete_event(event_id)

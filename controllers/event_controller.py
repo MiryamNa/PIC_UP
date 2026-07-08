@@ -1,10 +1,11 @@
 from fastapi import APIRouter, HTTPException
 from services.event_service import EventService
 from services.face_selected import FaceSelectedService
-
+from pathlib import Path
 from dto.EventDTO import EventDTO
 from dto.buildRequestDTO import BuildRequest
 from dto.face_selectedDTO import face_selectedDTO
+from dto.FolderRequest import FolderRequest
 from fastapi.responses import JSONResponse
 import tkinter as tk
 from tkinter import filedialog
@@ -73,11 +74,31 @@ async def update_event(event_id: int, update_data: dict):
     return event
 
 @router.delete("/{event_id}")
-async def delete_event(event_id: int):
+async def delete_event(event_id: str):
     success = await event_service.remove_event(event_id)
     if not success:
         raise HTTPException(status_code=404, detail="Event not found")
     return {"message": "Event deleted"}
+
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".tiff"}
+@router.post("/count-images")
+async def count_images(data:FolderRequest):
+    folder = Path(data.path)
+
+    if not folder.exists():
+        return {"error": "Folder does not exist"}
+
+    if not folder.is_dir():
+        return {"error": "Path is not a directory"}
+
+    image_count = sum(
+        1
+        for file in folder.iterdir()
+        if file.is_file() and file.suffix.lower() in IMAGE_EXTENSIONS
+    )
+
+    return {"image_count": image_count}
+
 
 
 # @router.post("/build/images")

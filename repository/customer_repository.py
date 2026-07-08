@@ -1,5 +1,5 @@
 from models.customer import Customer
-from dto.CustomerDTO import CustomerDTO
+from dto.customerDTO import CustomerDTO
 
 class CustomerRepository:
     async def create(self, data: Customer):

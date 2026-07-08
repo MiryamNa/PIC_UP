@@ -14,6 +14,7 @@ class EventRepository:
         )
 
         await event.insert()
+        print(event)
         return event
 
     async def get_event(self, event_id: int):
@@ -29,7 +30,7 @@ class EventRepository:
             return event
         return None
 
-    async def delete_event(self, event_id: int):
+    async def delete_event(self, event_id: str):
         event = await Event.find_one(Event.id == event_id)
         if event:
             await event.delete()

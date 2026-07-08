@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from dto.CustomerDTO import CustomerDTO
+from dto.customerDTO import CustomerDTO
 from services.customer_service import CustomerService
 from dto.CustomerLoginRequest import CustomerLoginRequest
 router = APIRouter(prefix="/customer", tags=["Customers"])

@@ -1,6 +1,6 @@
 from dto.CustomerLoginRequest import CustomerLoginRequest
 from repository.customer_repository import CustomerRepository
-from dto.CustomerDTO import CustomerDTO
+from dto.customerDTO import CustomerDTO
 from models.customer import Customer
 from fastapi import HTTPException
 
