@@ -9,6 +9,7 @@ from dto.FolderRequest import FolderRequest
 from fastapi.responses import JSONResponse
 import tkinter as tk
 from tkinter import filedialog
+
 service=FaceSelectedService()
 router = APIRouter(prefix="/event", tags=["Events"])
 # from services.build import Build
@@ -18,22 +19,37 @@ event_service = EventService()
 @router.post("/get_faces")
 async def get_faces(event_data: EventDTO):
     return await event_service.get_faces(event_data)
+# @router.post("/")
+# async def create_event(event_data: EventDTO):
+#     return await event_service.create_event(event_data)
 @router.post("/")
 async def create_event(event_data: EventDTO):
-    return await event_service.create_event(event_data)
-
-@router.post("/process-selection")
-async def process_faces(data:face_selectedDTO):
+    """יצירת אירוע + בניית אלבום — מסיר כפילויות, מנקד, מפיץ לקטגוריות."""
     try:
-        result =service.process_selected_faces(
-            data.bride_image,
-            data.groom_image,
-            data.selected_faces
-        )
+        result = await event_service.build_album(event_data)
         return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except RuntimeError as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-    except Exception as e:
-            return {"error": str(e)}
+
+
+
+
+
+# @router.post("/process-selection")
+# async def process_faces(data:face_selectedDTO):
+#     try:
+#         result =service.process_selected_faces(
+#             data.bride_image,
+#             data.groom_image,
+#             data.selected_faces
+#         )
+#         return result
+#
+#     except Exception as e:
+#             return {"error": str(e)}
 
 
 selected_folder = None

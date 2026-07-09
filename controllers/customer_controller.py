@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from dto.customerDTO import CustomerDTO
+from dto.CustomerDTO import CustomerDTO
 from services.customer_service import CustomerService
 from dto.CustomerLoginRequest import CustomerLoginRequest
 router = APIRouter(prefix="/customer", tags=["Customers"])
@@ -8,9 +8,11 @@ service = CustomerService()
 @router.post("/")
 async def create_customer(data: CustomerDTO):
     return await service.create(data)
+
 @router.post("/login")
 async def login_customer(payload: CustomerLoginRequest):
     return await service.login(payload)
+    
 @router.get("/")
 async def get_customers():
     return await service.list_all()
