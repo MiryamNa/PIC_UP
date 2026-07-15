@@ -97,6 +97,20 @@ async def delete_event(event_id: str):
     return {"message": "Event deleted"}
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".tiff"}
+
+@router.post("/get-images")
+async def get_images(data: FolderRequest):
+    folder = Path(data.path)
+
+    if not folder.exists():
+        raise HTTPException(status_code=404, detail="Folder does not exist")
+
+    if not folder.is_dir():
+        raise HTTPException(status_code=400, detail="Path is not a directory")
+
+    images = await event_service.get_images_as_base64(str(folder))
+    return images
+
 @router.post("/count-images")
 async def count_images(data:FolderRequest):
     folder = Path(data.path)
@@ -114,6 +128,7 @@ async def count_images(data:FolderRequest):
     )
 
     return {"image_count": image_count}
+
 
 
 

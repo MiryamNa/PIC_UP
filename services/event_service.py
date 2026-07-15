@@ -65,6 +65,8 @@ VALID_CATEGORIES = {
 }
 
 class EventService:
+
+
     def __init__(self):
         self.repo = EventRepository()
         self.deduplicate_service = DeduplicateService()
@@ -255,6 +257,42 @@ class EventService:
             "gender_counts": gender_count,
             "junk_count": junk_count,
         }
+
+    async def get_images_recursive(self, folder_path: str) -> list[str]:
+        images = []
+        if not os.path.isdir(folder_path):
+            return images
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                if os.path.splitext(file)[1].lower() in SUPPORTED_FORMATS:
+                    full_path = os.path.join(root, file)
+                    images.append(full_path)
+        return images
+
+    async def get_images_as_base64(self, folder_path: str) -> list[str]:
+        """מחזיר רשימת תמונות כ-base64 strings (ללא data:image prefix)."""
+        import base64
+
+        result = []
+        if not os.path.isdir(folder_path):
+            return result
+
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                if os.path.splitext(file)[1].lower() in SUPPORTED_FORMATS:
+                    full_path = os.path.join(root, file)
+                    try:
+                        data = await asyncio.to_thread(self._read_as_base64, full_path)
+                        result.append(data)
+                    except Exception:
+                        continue
+        return result
+
+    @staticmethod
+    def _read_as_base64(file_path: str) -> str:
+        import base64
+        with open(file_path, "rb") as f:
+            return base64.b64encode(f.read()).decode("utf-8")
 
     async def list_events(self):
         return await self.repo.get_all_events()
